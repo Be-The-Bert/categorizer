@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
+import {createChart} from './../ducks/chart'
 
 import "./App.css";
 
@@ -8,6 +10,7 @@ import AddDataset from "./AddDataset/AddDataset";
 
 class App extends Component {
 	render() {
+		const {activeChart, chart, createChart} = this.props;
 		return (
 			<div className="app">
 				<Sidebar />
@@ -16,7 +19,7 @@ class App extends Component {
 						<h1 className="app__title">Categorizer</h1>
 
 						<div className="app__new-chart">
-							<NewChart />
+							<NewChart createChart={createChart}/>
 						</div>
 					</header>
           <div className="app__active-chart">
@@ -27,5 +30,10 @@ class App extends Component {
 		);
 	}
 }
-
-export default App;
+function mapStateToProps({activeChartIndex, charts}) {
+	return {
+		activeChart: charts[activeChartIndex],
+		charts: charts
+	};
+}
+export default connect(mapStateToProps, {createChart})(App);
